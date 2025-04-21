@@ -1,4 +1,5 @@
 package com.example.vibematch
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +31,9 @@ class MainActivity : AppCompatActivity() {
                 else -> {
                     // Perform login logic here
                     Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(this, CompleteFormActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }

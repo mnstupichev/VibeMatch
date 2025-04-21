@@ -23,6 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".CompleteFormActivity"
+            android:label="Complete Profile"
+            android:exported="false"/>
     </application>
 
 </manifest>
