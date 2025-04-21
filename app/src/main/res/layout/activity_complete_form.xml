@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Основной контент с формой -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Заголовок -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Complete\nthe form\nto find other users"
+                android:textSize="32sp"
+                android:textAlignment="center"
+                android:lineSpacingExtra="8dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"/>
+
+            <!-- Город -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="City"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Контакт -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/actvContact"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Contact"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Жанры -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilGenres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/actGenres"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Genres"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Пол -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilGender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/actvGender"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Gender"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Био -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilBio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etBio"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:hint="Bio"
+                    android:inputType="textMultiLine"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Кнопка в правом нижнем углу -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSave"
+        android:contentDescription="The form is completed!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        app:layout_anchor="@id/scrollView"
+        app:layout_anchorGravity="bottom|end"
+        app:srcCompat="@drawable/ic_check"
+        app:backgroundTint="@color/button_background"
+        app:tint="@color/text_color"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
