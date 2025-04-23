@@ -31,9 +31,15 @@ class MainActivity : AppCompatActivity() {
                 else -> {
                     // Perform login logic here
                     Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show()
+                    // Сохраняем данные логина
+                    getSharedPreferences("UserProfile", MODE_PRIVATE).edit()
+                        .putString("username", username)
+                        .putString("email", email)
+                        .apply()
 
                     val intent = Intent(this, CompleteFormActivity::class.java)
                     startActivity(intent)
+                    finish()
                 }
             }
         }
