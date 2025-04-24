@@ -28,6 +28,11 @@
             android:name=".CompleteFormActivity"
             android:label="Complete Profile"
             android:exported="false"/>
+
+        <activity
+            android:name=".ProfileActivity"
+            android:label="User Profile"
+            android:exported="false"/>
     </application>
 
 </manifest>
