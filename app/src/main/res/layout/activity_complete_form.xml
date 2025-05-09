@@ -2,7 +2,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -29,6 +28,19 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="32dp"/>
 
+            <!-- Телеграм -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilTelegram"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/actvTelegram"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Telegram"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <!-- Город -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilCity"
@@ -42,30 +54,17 @@
                     android:hint="City"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Контакт -->
+            <!-- Специальность -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilContact"
+                android:id="@+id/tilSpeciality"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/actvContact"
+                    android:id="@+id/actSpeciality"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Contact"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Жанры -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilGenres"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/actGenres"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="Genres"/>
+                    android:hint="Speciality"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Пол -->
