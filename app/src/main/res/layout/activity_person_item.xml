@@ -1,0 +1,30 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:gravity="center_vertical">
+
+    <!-- Имя пользователя -->
+    <TextView
+        android:id="@+id/participantName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="Username"
+        android:paddingEnd="16dp"/>
+
+    <!-- Иконка профиля -->
+    <ImageView
+        android:id="@+id/profileIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/account_circle_outline"
+        android:backgroundTint="@color/button_background"
+        android:contentDescription="Profile icon"
+        android:scaleType="centerCrop"/>
+
+</LinearLayout>
