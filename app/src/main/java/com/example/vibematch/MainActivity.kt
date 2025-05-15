@@ -10,6 +10,13 @@ import android.widget.Button
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val prefs = getSharedPreferences("UserProfile", MODE_PRIVATE)
+        val username = prefs.getString("username", null)
+        if (username != null) {
+            startActivity(Intent(this, MainScreenActivity::class.java))
+            finish()
+            return
+        }
         setContentView(R.layout.activity_main)
 
         val etUsername = findViewById<TextInputEditText>(R.id.etUsername)
@@ -38,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                         .apply()
 
                     val intent = Intent(this, CompleteFormActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                     finish()
                 }

@@ -9,60 +9,29 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class EventsAdapter(
-    private val activities: MutableList<Event>, // Используем MutableList для изменений
-    private val onItemClick: (Event) -> Unit,
-    private val onLikeClick: (Event) -> Unit // Новый callback для лайков
-) : RecyclerView.Adapter<EventsAdapter.ActivityViewHolder>() {
+    private val events: List<Event>,
+    private val onItemClick: (Event) -> Unit
+) : RecyclerView.Adapter<EventsAdapter.EventViewHolder>() {
 
-    inner class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image: ImageView = itemView.findViewById(R.id.activityImage)
+    inner class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.activityName)
         val date: TextView = itemView.findViewById(R.id.activityDate)
         val time: TextView = itemView.findViewById(R.id.activityTime)
-        val btnLike: ImageButton = itemView.findViewById(R.id.btnLike) // Добавляем кнопку
-
-        fun bind(event: Event) {
-            // Обновляем иконку сердца
-            updateLikeIcon(event.isLiked)
-
-            btnLike.setOnClickListener {
-                event.isLiked = !event.isLiked
-                updateLikeIcon(event.isLiked)
-                onLikeClick(event) // Уведомляем внешний код
-            }
-        }
-
-        private fun updateLikeIcon(isLiked: Boolean) {
-            val iconRes = if (isLiked) {
-                R.drawable.ic_heart_filled
-            } else {
-                R.drawable.ic_heart
-            }
-            btnLike.setImageResource(iconRes)
-        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.activity_event_item, parent, false)
-        return ActivityViewHolder(view)
+        return EventViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
-        val activity = activities[position]
-
-        // Здесь можно использовать Glide/Picasso для загрузки изображений
-        holder.image.setImageResource(activity.imageRes)
-        holder.name.text = activity.name
-        holder.date.text = activity.date
-        holder.time.text = activity.time
-
-        holder.bind(activity) // Вызываем метод bind для настройки кнопки
-
-        holder.itemView.setOnClickListener {
-            onItemClick(activity)
-        }
+    override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
+        val event = events[position]
+        holder.name.text = event.title
+        holder.date.text = event.start_time.substring(0, 10) // YYYY-MM-DD
+        holder.time.text = event.start_time.substring(11, 16) // HH:MM
+        holder.itemView.setOnClickListener { onItemClick(event) }
     }
 
-    override fun getItemCount() = activities.size
+    override fun getItemCount() = events.size
 }

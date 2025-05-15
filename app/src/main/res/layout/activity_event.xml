@@ -14,8 +14,7 @@
         android:layout_margin="16dp"
         app:cardCornerRadius="28dp"
         app:cardElevation="8dp"
-        app:cardBackgroundColor="@color/button_background"
-        app:layout_gravity="top|end">
+        app:cardBackgroundColor="@color/button_background">
 
         <ImageView
             android:id="@+id/ivProfile"
@@ -51,7 +50,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_anchor="@id/tvHeader"
         app:layout_anchorGravity="bottom"
-        app:layout_marginTop="120dp">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,15 +85,16 @@
     </androidx.cardview.widget.CardView>
 
     <!-- Список участников -->
+
+    <!-- Кнопки навигации -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/eventsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="280dp"
         android:padding="16dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <!-- Кнопки навигации -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"

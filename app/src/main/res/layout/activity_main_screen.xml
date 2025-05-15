@@ -13,9 +13,7 @@
         android:layout_height="56dp"
         android:layout_margin="16dp"
         app:cardCornerRadius="28dp"
-        app:cardElevation="8dp"
-        app:cardBackgroundColor="@color/button_background"
-        app:layout_gravity="top|end">
+        app:cardElevation="8dp">
 
         <ImageView
             android:id="@+id/ivProfile"
@@ -41,8 +39,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <!-- Логотип ИТМО -->
-
-    <!-- Список событий -->
     <ImageView
         android:id="@+id/ivUniversity"
         android:layout_width="200dp"
@@ -51,17 +47,65 @@
         android:layout_marginTop="60dp"
         android:contentDescription="ITMO University logo"
         android:scaleType="fitCenter"
-        android:src="@drawable/itmo"
-        app:layout_anchor="@id/tvHeader"
-        app:layout_anchorGravity="bottom|center" />
+        android:src="@drawable/itmo"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/eventsRecyclerView"
+    <!-- Карточка события -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/eventCard"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
-        android:padding="16dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:layout_marginHorizontal="24dp"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvEventTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event Title"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvEventDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:id="@+id/tvEventLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/tvEventDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Индикатор события -->
+    <TextView
+        android:id="@+id/tvIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1/1"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="360dp"
+        android:gravity="center"/>
 
     <!-- Кнопки навигации внизу экрана -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -72,8 +116,7 @@
         android:backgroundTint="@color/button_background"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
-        app:layout_anchor="@id/eventsRecyclerView"
-        app:layout_anchorGravity="bottom|start" />
+        android:layout_gravity="bottom|start" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnForward"
@@ -83,8 +126,6 @@
         android:backgroundTint="@color/button_background"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:layout_anchor="@id/eventsRecyclerView"
-        app:layout_anchorGravity="bottom|end" />
-
+        android:layout_gravity="bottom|end" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,4 +1,5 @@
 package com.example.vibematch
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
@@ -15,10 +16,10 @@ class CompleteFormActivity : AppCompatActivity() {
 
         // Вешаем обработчик нажатия
         fabSave.setOnClickListener {
-            // Создаем Intent для перехода на ProfileActivity
-            val intent = Intent(this, ProfileActivity::class.java)
+            // Создаем Intent для перехода на MainScreenActivity
+            val intent = Intent(this, MainScreenActivity::class.java)
 
-            // Запускаем ProfileActivity
+            // Запускаем MainScreenActivity
             startActivity(intent)
 
             // Закрываем текущую активити (необязательно)
