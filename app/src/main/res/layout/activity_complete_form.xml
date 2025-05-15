@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/actvTelegram"
+                    android:id="@+id/etTelegram"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="Telegram"/>
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/actSpeciality"
+                    android:id="@+id/etSpeciality"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="Speciality"/>

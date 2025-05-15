@@ -3,10 +3,11 @@ package com.example.vibematch
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.vibematch.models.Event
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EventsAdapter(
     private val events: List<Event>,
@@ -28,8 +29,13 @@ class EventsAdapter(
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val event = events[position]
         holder.name.text = event.title
-        holder.date.text = event.start_time.substring(0, 10) // YYYY-MM-DD
-        holder.time.text = event.start_time.substring(11, 16) // HH:MM
+        
+        // Format date and time
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+        val formattedDate = dateFormat.format(event.startTime)
+        holder.date.text = formattedDate.substring(0, 10) // YYYY-MM-DD
+        holder.time.text = formattedDate.substring(11, 16) // HH:MM
+        
         holder.itemView.setOnClickListener { onItemClick(event) }
     }
 

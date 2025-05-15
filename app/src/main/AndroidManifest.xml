@@ -42,6 +42,18 @@
             android:name=".ProfileActivity"
             android:label="User Profile"
             android:exported="false"/>
+
+        <activity
+            android:name=".EventDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserProfileActivity"
+            android:exported="false" />
+            
+        <activity
+            android:name=".EditProfileActivity"
+            android:label="Редактирование профиля"
+            android:exported="false" />
     </application>
 
 </manifest>

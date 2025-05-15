@@ -6,30 +6,44 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.vibematch.models.EventParticipant
 
-class ParticipantsAdapter(
-    private val participants: List<User>,
-    private val onItemClick: (User) -> Unit
-) : RecyclerView.Adapter<ParticipantsAdapter.ParticipantViewHolder>() {
+class ParticipantsAdapter(private val onItemClick: (EventParticipant) -> Unit) : RecyclerView.Adapter<ParticipantsAdapter.ViewHolder>() {
+    private var participants: List<EventParticipant> = emptyList()
 
-    inner class ParticipantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView = itemView.findViewById(R.id.participantName)
-        val icon: ImageView = itemView.findViewById(R.id.profileIcon)
+    fun submitList(newParticipants: List<EventParticipant>) {
+        participants = newParticipants
+        notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParticipantViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.activity_person_item, parent, false)
-        return ParticipantViewHolder(view)
+            .inflate(R.layout.item_participant, parent, false)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ParticipantViewHolder, position: Int) {
-        val user = participants[position]
-        holder.name.text = user.username
-        // Можно добавить Glide/Picasso для загрузки аватарки, если есть url
-        holder.icon.setImageResource(R.drawable.account_circle_outline)
-        holder.itemView.setOnClickListener { onItemClick(user) }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val participant = participants[position]
+        holder.bind(participant)
     }
 
     override fun getItemCount() = participants.size
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val textView: TextView = itemView.findViewById(R.id.tvParticipantName)
+
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    onItemClick(participants[position])
+                }
+            }
+        }
+
+        fun bind(participant: EventParticipant) {
+            // Здесь можно добавить загрузку имени пользователя по userId
+            textView.text = "Участник #${participant.userId}"
+        }
+    }
 } 

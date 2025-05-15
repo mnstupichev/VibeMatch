@@ -2,56 +2,76 @@ package com.example.vibematch
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.example.vibematch.api.ApiService
+import com.example.vibematch.databinding.ActivityEventBinding
+import com.example.vibematch.models.EventParticipant
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class EventActivity : AppCompatActivity() {
-    private val repository = EventsRepository(ApiClient.apiService)
-    private var eventId: Int = -1
+    private lateinit var binding: ActivityEventBinding
+    private lateinit var apiService: ApiService
     private lateinit var participantsAdapter: ParticipantsAdapter
-    private val participants = mutableListOf<User>()
+    private var eventId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_event)
+        binding = ActivityEventBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        eventId = intent.getIntExtra("event_id", -1)
-        if (eventId == -1) finish()
+        // Получаем eventId из Intent
+        eventId = intent.getIntExtra("event_id", 0)
+        if (eventId == 0) {
+            Toast.makeText(this, "Ошибка: ID события не найден", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
 
-        val tvEventDate = findViewById<TextView>(R.id.tvEventDate)
-        val tvEventLocation = findViewById<TextView>(R.id.tvEventLocation)
-        val tvEventDescription = findViewById<TextView>(R.id.tvEventDescription)
-        val recyclerView = findViewById<RecyclerView>(R.id.eventsRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        participantsAdapter = ParticipantsAdapter(participants) { user ->
-            val intent = Intent(this, OthersProfileActivity::class.java)
-            intent.putExtra("user_id", user.user_id)
+        // Инициализируем Retrofit
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:8000/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        apiService = retrofit.create(ApiService::class.java)
+
+        // Настраиваем RecyclerView для участников
+        participantsAdapter = ParticipantsAdapter { participant ->
+            // Обработка клика по участнику
+            val intent = Intent(this, UserProfileActivity::class.java).apply {
+                putExtra("user_id", participant.userId)
+            }
             startActivity(intent)
         }
-        recyclerView.adapter = participantsAdapter
-
-        findViewById<androidx.cardview.widget.CardView>(R.id.profileCard).setOnClickListener {
-            startActivity(Intent(this, MainScreenActivity::class.java))
-            finish()
+        binding.rvParticipants.apply {
+            adapter = participantsAdapter
+            layoutManager = LinearLayoutManager(this@EventActivity)
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val event = repository.getEvent(eventId)
-            val eventParticipants = repository.getEventParticipants(eventId)
-            val users = eventParticipants.map { repository.getUser(it.user_id) }
-            withContext(Dispatchers.Main) {
-                tvEventDate.text = event.start_time.substring(0, 10)
-                tvEventLocation.text = event.location
-                tvEventDescription.text = event.description ?: ""
-                participants.clear()
-                participants.addAll(users)
-                participantsAdapter.notifyDataSetChanged()
+        // Загружаем участников
+        loadParticipants()
+
+        // Кнопка назад
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun loadParticipants() {
+        lifecycleScope.launch {
+            try {
+                val response = apiService.getEventParticipants(eventId)
+                if (response.isSuccessful) {
+                    participantsAdapter.submitList(response.body() ?: emptyList())
+                } else {
+                    Toast.makeText(this@EventActivity, "Ошибка при загрузке участников", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@EventActivity, "Ошибка: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
