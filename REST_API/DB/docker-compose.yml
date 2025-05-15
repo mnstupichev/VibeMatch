@@ -7,7 +7,11 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/friend_finder
+      - DB_USER=postgres
+      - DB_PASSWORD=1727131323
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=friend_finder
     depends_on:
       - db
     volumes:
@@ -18,7 +22,7 @@ services:
     image: postgres:13
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=1727131323
       - POSTGRES_DB=friend_finder
     ports:
       - "5432:5432"
