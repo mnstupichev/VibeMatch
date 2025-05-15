@@ -1,7 +1,7 @@
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from database import engine, Base, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
-from models import User, Event, EventParticipant
+from models import User, Event, EventParticipant, EventLike
 import logging
 
 # Настройка логирования

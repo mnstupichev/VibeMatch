@@ -57,3 +57,13 @@ class EventParticipant(Base):
 
     status = Column(String(20), default="interested")  # Статус участия
     registered_at = Column(DateTime(timezone=True), server_default=func.now())  # Время регистрации
+
+
+class EventLike(Base):
+    """Модель лайков событий"""
+    __tablename__ = "event_likes"
+
+    # Составной первичный ключ
+    event_id = Column(Integer, ForeignKey("events.event_id"), primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.user_id"), primary_key=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

@@ -1,31 +1,46 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, EmailStr  # EmailStr для валидации email
+from pydantic import BaseModel, EmailStr, Field
 
 # Базовые схемы для валидации данных
 
 class UserBase(BaseModel):
-    """Базовые поля пользователя (для создания и чтения)"""
-    email: EmailStr  # Валидация формата email
+    """Базовые поля пользователя"""
+    email: EmailStr
     username: str
 
 class UserCreate(UserBase):
-    """Схема для создания пользователя (добавляем пароль)"""
-    password: str  # Пароль будет хешироваться перед сохранением
+    """Схема для создания пользователя"""
+    password: str
 
-class User(UserBase):
-    """Полная схема пользователя (для ответов API)"""
-    user_id: int
-    gender: Optional[str] = None  # Все поля необязательные
+class UserUpdate(BaseModel):
+    """Схема для обновления пользователя"""
+    username: Optional[str] = None
+    gender: Optional[str] = None
     city: Optional[str] = None
     telegram_link: Optional[str] = None
     speciality: Optional[str] = None
     profile_picture_url: Optional[str] = None
     bio: Optional[str] = None
-    is_active: bool  # Флаг активности
+
+class User(UserBase):
+    """Полная схема пользователя для ответов API"""
+    user_id: int
+    gender: Optional[str] = None
+    city: Optional[str] = None
+    telegram_link: Optional[str] = None
+    speciality: Optional[str] = None
+    profile_picture_url: Optional[str] = None
+    bio: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+    is_active: bool = True
 
     class Config:
-        orm_mode = True  # Позволяет использовать с SQLAlchemy моделями
+        orm_mode = True
+        json_encoders = {
+            datetime: lambda v: v.isoformat()
+        }
 
 class EventBase(BaseModel):
     """Базовые поля события"""
@@ -62,6 +77,22 @@ class EventParticipant(EventParticipantBase):
     event_id: int
     user_id: int
     registered_at: datetime
+
+    class Config:
+        orm_mode = True
+
+class EventLikeBase(BaseModel):
+    """Базовые поля лайка события"""
+    event_id: int
+    user_id: int
+
+class EventLikeCreate(EventLikeBase):
+    """Схема для создания лайка"""
+    pass
+
+class EventLike(EventLikeBase):
+    """Полная схема лайка события"""
+    created_at: datetime
 
     class Config:
         orm_mode = True
