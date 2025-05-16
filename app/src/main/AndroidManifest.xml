@@ -54,6 +54,8 @@
             android:name=".EditProfileActivity"
             android:label="Редактирование профиля"
             android:exported="false" />
+
+        <activity android:name=".OthersProfileActivity" />
     </application>
 
 </manifest>

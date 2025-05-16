@@ -7,6 +7,7 @@
 
     <ImageView
         android:id="@+id/ivParticipantAvatar"
+        style="@style/CircularButton.Profile"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/ic_person"
@@ -19,6 +20,6 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="16dp"
         android:textSize="16sp"
-        android:textColor="@android:color/black" />
+        android:textColor="@color/primary_blue" />
 
 </LinearLayout> 

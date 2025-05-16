@@ -9,6 +9,7 @@ CREATE TABLE users (
     telegram_link VARCHAR(100),
     speciality VARCHAR(100)
     profile_picture_url VARCHAR(255),
+    age INTEGER,
     bio TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,

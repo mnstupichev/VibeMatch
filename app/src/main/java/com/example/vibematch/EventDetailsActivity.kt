@@ -11,6 +11,7 @@ import com.example.vibematch.databinding.ActivityEventDetailsBinding
 import com.example.vibematch.models.Event
 import com.example.vibematch.models.EventLike
 import com.example.vibematch.models.EventParticipant
+import com.example.vibematch.models.EventParticipantWithUser
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -44,9 +45,9 @@ class EventDetailsActivity : AppCompatActivity() {
 
         // Настраиваем RecyclerView для участников
         participantsAdapter = ParticipantsAdapter { participant ->
-            // Обработка клика по участнику
-            val intent = Intent(this, UserProfileActivity::class.java).apply {
-                putExtra("user_id", participant.userId)
+            // Открываем чужой профиль по userId
+            val intent = Intent(this, OthersProfileActivity::class.java).apply {
+                putExtra("user_id", participant.user.id)
             }
             startActivity(intent)
         }
@@ -95,10 +96,21 @@ class EventDetailsActivity : AppCompatActivity() {
     private fun loadParticipants() {
         lifecycleScope.launch {
             try {
-                // Загружаем участников
-                val participantsResponse = apiService.getEventParticipants(eventId)
-                if (participantsResponse.isSuccessful) {
-                    participantsAdapter.submitList(participantsResponse.body() ?: emptyList())
+                // Загружаем пользователей, лайкнувших событие
+                val likesResponse = apiService.getEventLikesWithUsers(eventId)
+                if (likesResponse.isSuccessful) {
+                    val users = likesResponse.body() ?: emptyList()
+                    // Преобразуем User в EventParticipantWithUser для адаптера (заполним eventId и userId)
+                    val participants = users.map { user ->
+                        EventParticipantWithUser(
+                            eventId = eventId,
+                            userId = user.id,
+                            status = "liked",
+                            registeredAt = Date(), // Можно заменить на null или текущее время
+                            user = user
+                        )
+                    }
+                    participantsAdapter.submitList(participants)
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@EventDetailsActivity, "Ошибка: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -126,8 +138,8 @@ class EventDetailsActivity : AppCompatActivity() {
 
     private fun updateLikeButton() {
         binding.btnLike.apply {
-            text = if (isLiked) "Убрать лайк" else "Лайк"
-            setIconResource(if (isLiked) android.R.drawable.btn_star_big_on else android.R.drawable.btn_star_big_off)
+            setIconResource(if (isLiked) R.drawable.ic_heart_filled else R.drawable.ic_heart)
+            iconTint = getColorStateList(if (isLiked) R.color.heart_red else R.color.light_blue)
         }
     }
 

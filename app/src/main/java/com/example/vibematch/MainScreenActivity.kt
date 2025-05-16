@@ -167,8 +167,8 @@ class MainScreenActivity : AppCompatActivity() {
         
         binding.btnLike.apply {
             isEnabled = true
-            text = if (isLiked) "Убрать лайк" else "Лайк"
-            setIconResource(if (isLiked) android.R.drawable.btn_star_big_on else android.R.drawable.btn_star_big_off)
+            setIconResource(if (isLiked) R.drawable.ic_heart_filled else R.drawable.ic_heart)
+            iconTint = getColorStateList(if (isLiked) R.color.heart_red else R.color.light_blue)
             
             // Удаляем предыдущий обработчик, если он есть
             setOnClickListener(null)
@@ -329,8 +329,8 @@ class EventAdapter(private val onEventClick: (Event) -> Unit) : RecyclerView.Ada
 
             // Обновляем состояние кнопки лайка
             btnLike.apply {
-                text = if (isLiked) "Убрать лайк" else "Лайк"
-                setIconResource(if (isLiked) android.R.drawable.btn_star_big_on else android.R.drawable.btn_star_big_off)
+                setIconResource(if (isLiked) R.drawable.ic_heart_filled else R.drawable.ic_heart)
+                iconTint = context.getColorStateList(if (isLiked) R.color.heart_red else R.color.light_blue)
                 setOnClickListener {
                     event.eventId?.let { eventId ->
                         if (eventId > 0) {

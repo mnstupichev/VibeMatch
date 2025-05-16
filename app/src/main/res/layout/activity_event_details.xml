@@ -73,11 +73,14 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLike"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Лайк"
-                android:layout_marginBottom="24dp"
-                app:icon="@android:drawable/btn_star_big_on"/>
+                style="@style/CircularButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="end"
+                android:padding="15dp"
+                app:icon="@drawable/ic_heart"
+                app:iconTint="@color/primary_blue"
+                android:text=""/>
 
             <TextView
                 android:layout_width="match_parent"

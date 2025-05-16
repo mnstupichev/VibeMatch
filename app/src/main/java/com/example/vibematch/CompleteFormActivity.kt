@@ -8,7 +8,7 @@ import com.example.vibematch.api.ApiClient
 import com.example.vibematch.api.ApiService
 import com.example.vibematch.models.User
 import com.example.vibematch.models.UserUpdate
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -33,29 +33,75 @@ class CompleteFormActivity : AppCompatActivity() {
         }
 
         // Инициализация полей ввода
-        val etCity = findViewById<TextInputEditText>(R.id.etCity)
-        val etSpeciality = findViewById<TextInputEditText>(R.id.etSpeciality)
-        val etTelegram = findViewById<TextInputEditText>(R.id.etTelegram)
+        val etUsername = findViewById<TextInputEditText>(R.id.etUsername)
+        val etAge = findViewById<TextInputEditText>(R.id.etAge)
+        val etGender = findViewById<TextInputEditText>(R.id.etGender)
         val etBio = findViewById<TextInputEditText>(R.id.etBio)
-        val etGender = findViewById<TextInputEditText>(R.id.actvGender)
+        val etTelegram = findViewById<TextInputEditText>(R.id.etTelegram)
+        val etCity = findViewById<TextInputEditText>(R.id.etCity)
+        val btnSave = findViewById<MaterialButton>(R.id.btnSave)
 
-        // Заполняем поля текущими данными
-        etCity.setText(intent.getStringExtra("city"))
-        etSpeciality.setText(intent.getStringExtra("speciality"))
-        etTelegram.setText(intent.getStringExtra("telegram"))
-        etBio.setText(intent.getStringExtra("bio"))
-        etGender.setText(intent.getStringExtra("gender"))
+        // Загружаем текущие данные пользователя
+        loadUserProfile(etUsername, etAge, etGender, etBio, etTelegram, etCity)
 
         // Кнопка сохранения
-        findViewById<FloatingActionButton>(R.id.fabSave).setOnClickListener {
+        btnSave.setOnClickListener {
+            val username = etUsername.text?.toString()?.takeIf { it.isNotBlank() }
+            val age = etAge.text?.toString()?.toIntOrNull()
+            val gender = etGender.text?.toString()?.takeIf { it.isNotBlank() }
+            val bio = etBio.text?.toString()?.takeIf { it.isNotBlank() }
+            val telegram = etTelegram.text?.toString()?.takeIf { it.isNotBlank() }
+            val city = etCity.text?.toString()?.takeIf { it.isNotBlank() }
             val userUpdate = UserUpdate(
-                city = etCity.text?.toString()?.takeIf { it.isNotBlank() },
-                speciality = etSpeciality.text?.toString()?.takeIf { it.isNotBlank() },
-                telegramLink = etTelegram.text?.toString()?.takeIf { it.isNotBlank() },
-                bio = etBio.text?.toString()?.takeIf { it.isNotBlank() },
-                gender = etGender.text?.toString()?.takeIf { it.isNotBlank() }
+                username = username,
+                age = age,
+                gender = gender,
+                bio = bio,
+                telegramLink = telegram,
+                city = city
             )
             saveUserData(userUpdate)
+        }
+    }
+
+    private fun loadUserProfile(
+        etUsername: TextInputEditText,
+        etAge: TextInputEditText,
+        etGender: TextInputEditText,
+        etBio: TextInputEditText,
+        etTelegram: TextInputEditText,
+        etCity: TextInputEditText
+    ) {
+        lifecycleScope.launch {
+            try {
+                val response = apiService.getUser(userId)
+                if (response.isSuccessful) {
+                    val user = response.body()
+                    if (user != null) {
+                        // Заполняем поля данными пользователя
+                        etUsername.setText(user.username)
+                        etAge.setText(user.age?.toString() ?: "")
+                        etGender.setText(user.gender ?: "")
+                        etBio.setText(user.bio ?: "")
+                        etTelegram.setText(user.telegramLink ?: "")
+                        etCity.setText(user.city ?: "")
+                    } else {
+                        Toast.makeText(this@CompleteFormActivity, "Ошибка: данные пользователя не найдены", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                } else {
+                    val errorMessage = when (response.code()) {
+                        404 -> "Пользователь не найден"
+                        401 -> "Требуется авторизация"
+                        else -> "Ошибка при загрузке профиля: ${response.errorBody()?.string() ?: "Неизвестная ошибка"}"
+                    }
+                    Toast.makeText(this@CompleteFormActivity, errorMessage, Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@CompleteFormActivity, "Ошибка: ${e.message}", Toast.LENGTH_SHORT).show()
+                finish()
+            }
         }
     }
 

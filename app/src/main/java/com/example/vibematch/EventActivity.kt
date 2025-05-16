@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.vibematch.api.ApiService
 import com.example.vibematch.databinding.ActivityEventBinding
 import com.example.vibematch.models.EventParticipant
+import com.example.vibematch.models.EventParticipantWithUser
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -41,9 +42,8 @@ class EventActivity : AppCompatActivity() {
 
         // Настраиваем RecyclerView для участников
         participantsAdapter = ParticipantsAdapter { participant ->
-            // Обработка клика по участнику
             val intent = Intent(this, UserProfileActivity::class.java).apply {
-                putExtra("user_id", participant.userId)
+                putExtra("user_id", participant.user.id)
             }
             startActivity(intent)
         }
@@ -64,7 +64,7 @@ class EventActivity : AppCompatActivity() {
     private fun loadParticipants() {
         lifecycleScope.launch {
             try {
-                val response = apiService.getEventParticipants(eventId)
+                val response = apiService.getEventParticipantsWithUsers(eventId)
                 if (response.isSuccessful) {
                     participantsAdapter.submitList(response.body() ?: emptyList())
                 } else {

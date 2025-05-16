@@ -25,7 +25,6 @@ class ProfileActivity : AppCompatActivity() {
 
         // Инициализация элементов
         val tvUsername = findViewById<TextView>(R.id.tvUsername)
-        val tvInfo = findViewById<TextView>(R.id.tvInfo)
         val tvCity = findViewById<TextView>(R.id.tvCity)
         val tvSpeciality = findViewById<TextView>(R.id.tvSpeciality)
         val tvTelegram = findViewById<TextView>(R.id.tvTelegram)

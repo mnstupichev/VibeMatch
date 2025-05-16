@@ -6,6 +6,7 @@ import com.example.vibematch.models.EventParticipant
 import com.example.vibematch.models.User
 import com.example.vibematch.models.UserCreate
 import com.example.vibematch.models.UserUpdate
+import com.example.vibematch.models.EventParticipantWithUser
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -58,4 +59,10 @@ interface ApiService {
 
     @GET("users/{user_id}/liked-events/")
     suspend fun getUserLikedEvents(@Path("user_id") userId: Int): Response<List<Event>>
+
+    @GET("events/{event_id}/participants_with_users/")
+    suspend fun getEventParticipantsWithUsers(@Path("event_id") eventId: Int): Response<List<EventParticipantWithUser>>
+
+    @GET("events/{event_id}/likes_with_users/")
+    suspend fun getEventLikesWithUsers(@Path("event_id") eventId: Int): Response<List<User>>
 } 

@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.vibematch.models.EventParticipant
+import com.example.vibematch.models.EventParticipantWithUser
 
-class ParticipantsAdapter(private val onItemClick: (EventParticipant) -> Unit) : RecyclerView.Adapter<ParticipantsAdapter.ViewHolder>() {
-    private var participants: List<EventParticipant> = emptyList()
+class ParticipantsAdapter(private val onItemClick: (EventParticipantWithUser) -> Unit) : RecyclerView.Adapter<ParticipantsAdapter.ViewHolder>() {
+    private var participants: List<EventParticipantWithUser> = emptyList()
 
-    fun submitList(newParticipants: List<EventParticipant>) {
+    fun submitList(newParticipants: List<EventParticipantWithUser>) {
         participants = newParticipants
         notifyDataSetChanged()
     }
@@ -41,9 +41,8 @@ class ParticipantsAdapter(private val onItemClick: (EventParticipant) -> Unit) :
             }
         }
 
-        fun bind(participant: EventParticipant) {
-            // Здесь можно добавить загрузку имени пользователя по userId
-            textView.text = "Участник #${participant.userId}"
+        fun bind(participant: EventParticipantWithUser) {
+            textView.text = participant.user.username
         }
     }
 } 

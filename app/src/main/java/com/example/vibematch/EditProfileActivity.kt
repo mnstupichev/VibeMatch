@@ -3,26 +3,25 @@ package com.example.vibematch
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.vibematch.api.ApiClient
 import com.example.vibematch.api.ApiService
-import com.example.vibematch.databinding.ActivityEditProfileBinding
+import com.example.vibematch.databinding.ActivityCompleteFormBinding
 import com.example.vibematch.models.UserUpdate
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 
 class EditProfileActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityEditProfileBinding
+    private lateinit var binding: ActivityCompleteFormBinding
     private lateinit var apiService: ApiService
     private var userId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityEditProfileBinding.inflate(layoutInflater)
+        binding = ActivityCompleteFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Получаем userId из Intent
@@ -35,17 +34,6 @@ class EditProfileActivity : AppCompatActivity() {
 
         // Инициализация API сервиса
         apiService = ApiClient.getClient().create(ApiService::class.java)
-
-        // Инициализация спиннера для выбора пола
-        val genders = arrayOf("Мужской", "Женский", "Другой")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, genders)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerGender.adapter = adapter
-
-        // Настройка кнопки назад
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
 
         // Настройка кнопки сохранения
         binding.btnSave.setOnClickListener {
@@ -71,14 +59,7 @@ class EditProfileActivity : AppCompatActivity() {
                         binding.etUsername.setText(user.username)
                         binding.etBio.setText(user.bio ?: "")
                         binding.etAge.setText(user.age?.toString() ?: "")
-                        binding.etInterests.setText(user.interests ?: "")
-                        
-                        // Устанавливаем пол в спиннере
-                        val genderPosition = (binding.spinnerGender.adapter as ArrayAdapter<String>)
-                            .getPosition(user.gender ?: "Другой")
-                        if (genderPosition >= 0) {
-                            binding.spinnerGender.setSelection(genderPosition)
-                        }
+                        binding.etGender.setText(user.gender ?: "")
                     } else {
                         Toast.makeText(this@EditProfileActivity, "Ошибка: данные пользователя не найдены", Toast.LENGTH_SHORT).show()
                         finish()
@@ -109,8 +90,7 @@ class EditProfileActivity : AppCompatActivity() {
         val bio = binding.etBio.text.toString().trim()
         val ageStr = binding.etAge.text.toString().trim()
         val age = if (ageStr.isNotEmpty()) ageStr.toIntOrNull() else null
-        val gender = binding.spinnerGender.selectedItem.toString()
-        val interests = binding.etInterests.text.toString().trim()
+        val gender = binding.etGender.text.toString().trim()
 
         // Валидация данных
         if (username.isBlank()) {
@@ -144,8 +124,7 @@ class EditProfileActivity : AppCompatActivity() {
                     username = username,
                     bio = bio,
                     age = age,
-                    gender = gender,
-                    interests = interests
+                    gender = gender
                 )
 
                 val response = apiService.updateUser(userId, userUpdate)
@@ -158,7 +137,6 @@ class EditProfileActivity : AppCompatActivity() {
                             putString("bio", updatedUser.bio)
                             putInt("age", updatedUser.age ?: 0)
                             putString("gender", updatedUser.gender)
-                            putString("interests", updatedUser.interests)
                             apply()
                         }
 

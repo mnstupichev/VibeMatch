@@ -15,15 +15,16 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:text="Username"
+        android:textColor="@color/primary_blue"
         android:paddingEnd="16dp"/>
 
     <!-- Иконка профиля -->
     <ImageView
         android:id="@+id/profileIcon"
+        style="@style/CircularButton.Profile"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/account_circle_outline"
-        android:backgroundTint="@color/button_background"
+        android:src="@drawable/ic_person"
         android:contentDescription="Profile icon"
         android:scaleType="centerCrop"/>
 

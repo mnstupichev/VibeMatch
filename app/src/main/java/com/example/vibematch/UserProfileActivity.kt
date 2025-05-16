@@ -10,19 +10,26 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.vibematch.api.ApiClient
 import com.example.vibematch.api.ApiService
-import com.example.vibematch.databinding.ActivityUserProfileBinding
+import com.example.vibematch.databinding.ActivityProfileBinding
 import com.example.vibematch.models.User
 import kotlinx.coroutines.launch
+import androidx.activity.result.contract.ActivityResultContracts
 
 class UserProfileActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityUserProfileBinding
+    private lateinit var binding: ActivityProfileBinding
     private lateinit var apiService: ApiService
     private var userId: Int = 0
     private lateinit var likedEventsAdapter: EventAdapter
 
+    private val editProfileLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            loadUserProfile()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityUserProfileBinding.inflate(layoutInflater)
+        binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Получаем userId из Intent
@@ -42,10 +49,10 @@ class UserProfileActivity : AppCompatActivity() {
         }
 
         // Настройка кнопки редактирования профиля
-        binding.btnEditProfile.setOnClickListener {
+        binding.btnEdit.setOnClickListener {
             val intent = Intent(this, EditProfileActivity::class.java)
             intent.putExtra("user_id", userId)
-            startActivity(intent)
+            editProfileLauncher.launch(intent)
         }
 
         // Инициализация адаптера для понравившихся событий
@@ -58,7 +65,7 @@ class UserProfileActivity : AppCompatActivity() {
         }
 
         // Настройка RecyclerView
-        binding.rvLikedEvents.apply {
+        binding.eventsRecyclerView.apply {
             adapter = likedEventsAdapter
             layoutManager = LinearLayoutManager(this@UserProfileActivity)
             
@@ -68,6 +75,17 @@ class UserProfileActivity : AppCompatActivity() {
             // Включаем оптимизации для улучшения производительности
             setHasFixedSize(true)
             setItemViewCacheSize(20)
+        }
+
+        // Кнопка выхода из профиля
+        binding.tvLogout.setOnClickListener {
+            // Очищаем данные пользователя
+            getSharedPreferences("UserProfile", MODE_PRIVATE).edit().clear().apply()
+            // Переходим на экран входа
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
         }
 
         // Загрузка данных профиля
@@ -83,7 +101,12 @@ class UserProfileActivity : AppCompatActivity() {
                     val user = userResponse.body()
                     user?.let {
                         binding.tvUsername.text = it.username
+                        binding.tvCity.text = it.city ?: ""
+                        binding.tvSpeciality.text = it.speciality ?: ""
+                        binding.tvTelegram.text = it.telegramLink ?: ""
                         binding.tvEmail.text = it.email
+                        binding.tvGender.text = it.gender ?: ""
+                        binding.tvAge.text = it.age?.toString() ?: ""
                         binding.tvBio.text = it.bio ?: "Нет информации о себе"
                     }
                 }

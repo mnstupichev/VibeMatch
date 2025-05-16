@@ -40,11 +40,13 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLike"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Лайк"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            app:icon="@android:drawable/btn_star_big_off"/>
+            style="@style/CircularButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end"
+            app:icon="@drawable/ic_heart"
+            app:iconTint="@color/primary_blue"
+            android:text=""/>
 
     </LinearLayout>
 
