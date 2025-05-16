@@ -116,7 +116,7 @@ struct CreateView: View {
     
         meetings.append(newMeeting)
         
-        UserDefaults.standard.set(meetings, forKey: "meetings")
+        UserDefaults.standard.set(meetings, forKey: "forms")
 
         formName = ""
         formCity = ""
@@ -131,6 +131,7 @@ struct CreateView: View {
 struct ProfileView: View {
     @State private var userName: String = ""
     @State private var userEmail: String = ""
+    @State private var userForms: [[String: String]] = []
 
     var body: some View {
         VStack {
@@ -143,9 +144,36 @@ struct ProfileView: View {
                 Text("Email: \(userEmail)")
             }
             .padding()
+            
+            Divider()
+            
+            Text("My Form")
+                .font(.title2)
+                .padding(.top)
+            
+            if userForms.isEmpty {
+                Text("There is no Form")
+                    .foregroundColor(.gray)
+                    .padding()
+            } else {
+                List(userForms, id: \.self) { form in
+                    VStack(alignment: .leading) {
+                        Text(form["Name"] ?? "Без названия")
+                            .font(.headline)
+                        Text("City: \(form["City"] ?? "не указан")")
+                        Text("Gender: \(form["Gender"] ?? "не указан")")
+                        Text("Age: \(form["Age"] ?? "не указана")")
+                    }
+                    .padding(.vertical)
+                }
+                .listStyle(PlainListStyle())
+            }
+            
+            Spacer()
         }
         .onAppear {
             loadProfile()
+            loadForms()
         }
     }
 
@@ -153,4 +181,9 @@ struct ProfileView: View {
         userName = UserDefaults.standard.string(forKey: "userName") ?? "Неизвестно"
         userEmail = UserDefaults.standard.string(forKey: "userEmail") ?? "Неизвестно"
     }
+    
+    private func loadForms() {
+        userForms = UserDefaults.standard.array(forKey: "forms") as? [[String: String]] ?? []
+    }
 }
+
