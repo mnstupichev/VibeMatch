@@ -1,7 +1,7 @@
 import requests
 import sys
 from database import SessionLocal
-from models import User, Event
+from models import User, Event, EventLike
 
 def check_database():
     print("Проверка подключения к базе данных...")
@@ -11,6 +11,20 @@ def check_database():
         users_count = db.query(User).count()
         print(f"✓ База данных доступна")
         print(f"✓ Количество пользователей: {users_count}")
+        
+        # Выводим данные каждого пользователя
+        users = db.query(User).all()
+        for user in users:
+            print(f"\nПользователь: {user.user_id} | {user.username} | {user.email}")
+            print(f"  Город: {user.city}")
+            print(f"  Пол: {user.gender}")
+            print(f"  Telegram: {user.telegram_link}")
+            print(f"  Bio: {user.bio}")
+            print(f"  Возраст: {user.age}")
+            # Найти лайкнутые события
+            liked_events = db.query(EventLike).filter(EventLike.user_id == user.user_id).all()
+            liked_event_ids = [like.event_id for like in liked_events]
+            print(f"  Лайкнутые события (event_id): {liked_event_ids}")
         
         # Проверяем таблицу событий
         events_count = db.query(Event).count()

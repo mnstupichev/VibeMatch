@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel, EmailStr, Field
 
 # Базовые схемы для валидации данных
@@ -22,6 +22,7 @@ class UserUpdate(BaseModel):
     speciality: Optional[str] = None
     profile_picture_url: Optional[str] = None
     bio: Optional[str] = None
+    age: Optional[int] = None
 
 class User(UserBase):
     """Полная схема пользователя для ответов API"""
@@ -32,12 +33,13 @@ class User(UserBase):
     speciality: Optional[str] = None
     profile_picture_url: Optional[str] = None
     bio: Optional[str] = None
+    age: Optional[int] = None
     created_at: datetime
     updated_at: datetime
     is_active: bool = True
 
     class Config:
-        orm_mode = True
+        from_attributes = True
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
@@ -61,7 +63,7 @@ class Event(EventBase):
     is_active: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class EventParticipantBase(BaseModel):
     """Базовые поля участника события"""
@@ -79,7 +81,7 @@ class EventParticipant(EventParticipantBase):
     registered_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class EventLikeBase(BaseModel):
     """Базовые поля лайка события"""
@@ -95,4 +97,13 @@ class EventLike(EventLikeBase):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+class EventParticipantWithUser(BaseModel):
+    event_id: int
+    user_id: int
+    status: str
+    registered_at: datetime
+    user: User
+    class Config:
+        from_attributes = True

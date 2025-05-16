@@ -22,6 +22,7 @@ class User(Base):
     # Медиа и описание
     profile_picture_url = Column(String(255))  # URL аватарки
     bio = Column(Text)  # Описание профиля
+    age = Column(Integer)  # Возраст пользователя
 
     # Служебные поля
     created_at = Column(DateTime(timezone=True), server_default=func.now())  # Автоматическая установка времени создания

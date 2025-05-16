@@ -3,8 +3,15 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 import crud, models, schemas
 from database import get_db
+import logging
+
+from test_utils import router as test_utils_router
+from schemas import EventParticipantWithUser
 
 app = FastAPI(title="VibeMatch API")
+
+# Настройка логирования
+logger = logging.getLogger(__name__)
 
 # Root endpoint
 @app.get("/")
@@ -134,9 +141,38 @@ def create_event(event: schemas.EventCreate, db: Session = Depends(get_db)):
 def toggle_event_like(event_id: int, user_id: int, db: Session = Depends(get_db)):
     """Поставить или убрать лайк событию"""
     try:
-        return crud.toggle_event_like(db, event_id, user_id)
+        logger.debug(f"Received like toggle request for event_id: {event_id}, user_id: {user_id}")
+        result = crud.toggle_event_like(db, event_id, user_id)
+        
+        if result is None:
+            logger.info(f"Like removed for event_id: {event_id}, user_id: {user_id}")
+            return {"message": "Like removed successfully"}
+        else:
+            logger.info(f"Like added for event_id: {event_id}, user_id: {user_id}")
+            return result
+            
+    except ValueError as e:
+        error_msg = str(e)
+        logger.error(f"Error toggling like: {error_msg}")
+        
+        if "Event not found" in error_msg:
+            raise HTTPException(status_code=404, detail="Event not found")
+        elif "User not found" in error_msg:
+            raise HTTPException(status_code=404, detail="User not found")
+        elif "Database error" in error_msg:
+            logger.error(f"Database error details: {error_msg}", exc_info=True)
+            raise HTTPException(
+                status_code=500,
+                detail="Database error occurred while toggling like"
+            )
+        else:
+            raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Unexpected error in toggle_event_like endpoint: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail="An unexpected error occurred while toggling like"
+        )
 
 @app.get("/events/{event_id}/likes/", response_model=List[schemas.EventLike])
 def get_event_likes(event_id: int, db: Session = Depends(get_db)):
@@ -148,8 +184,44 @@ def get_event_likes(event_id: int, db: Session = Depends(get_db)):
 
 @app.get("/users/{user_id}/liked-events/", response_model=List[schemas.Event])
 def get_user_liked_events(user_id: int, db: Session = Depends(get_db)):
-    """Получить все события, которые лайкнул пользователь"""
+    """Получить список событий, которые лайкнул пользователь"""
     try:
-        return crud.get_user_liked_events(db, user_id)
+        logger.debug(f"Received request for liked events of user {user_id}")
+        events = crud.get_user_liked_events(db, user_id)
+        logger.debug(f"Successfully retrieved {len(events)} liked events for user {user_id}")
+        return events
+    except ValueError as e:
+        error_msg = str(e)
+        logger.error(f"Error getting liked events for user {user_id}: {error_msg}")
+        
+        if "User not found" in error_msg:
+            raise HTTPException(status_code=404, detail="User not found")
+        elif "Database error" in error_msg:
+            logger.error(f"Database error details: {error_msg}", exc_info=True)
+            raise HTTPException(
+                status_code=500,
+                detail="Database error occurred while fetching liked events"
+            )
+        else:
+            raise HTTPException(status_code=500, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Unexpected error in get_user_liked_events endpoint: {str(e)}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail="An unexpected error occurred while fetching liked events"
+        )
+
+@app.get("/events/{event_id}/participants_with_users/", response_model=List[EventParticipantWithUser])
+def get_event_participants_with_users(event_id: int, db: Session = Depends(get_db)):
+    return crud.get_event_participants_with_users(db, event_id)
+
+@app.get("/events/{event_id}/likes_with_users/", response_model=List[schemas.User])
+def get_event_likes_with_users(event_id: int, db: Session = Depends(get_db)):
+    likes = db.query(models.EventLike).filter(models.EventLike.event_id == event_id).all()
+    user_ids = [like.user_id for like in likes]
+    if not user_ids:
+        return []
+    users = db.query(models.User).filter(models.User.user_id.in_(user_ids)).all()
+    return users
+
+app.include_router(test_utils_router)
