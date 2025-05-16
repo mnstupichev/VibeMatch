@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="button_background">#CFDDFF</color>
-    <color name="text_color">#F7373D57</color>
+    <color name="text_color">#2196F3</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="screen_background">#FFFFFF</color>
+    <color name="primary_blue">#2196F3</color>
+    <color name="light_blue">#90CAF9</color>
+    <color name="background_color">#FFFFFF</color>
+    <color name="background_light">#F6F8FF</color>
+    <color name="accent_blue">#2196F3</color>
+    <color name="heart_red">#FF3B30</color>
 </resources>
