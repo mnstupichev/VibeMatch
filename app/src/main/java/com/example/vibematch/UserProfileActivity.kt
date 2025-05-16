@@ -104,7 +104,6 @@ class UserProfileActivity : AppCompatActivity() {
                         binding.tvCity.text = it.city ?: ""
                         binding.tvSpeciality.text = it.speciality ?: ""
                         binding.tvTelegram.text = it.telegramLink ?: ""
-                        binding.tvEmail.text = it.email
                         binding.tvGender.text = it.gender ?: ""
                         binding.tvAge.text = it.age?.toString() ?: ""
                         binding.tvBio.text = it.bio ?: "Нет информации о себе"

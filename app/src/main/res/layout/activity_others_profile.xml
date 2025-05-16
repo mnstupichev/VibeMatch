@@ -48,48 +48,69 @@
                 android:layout_marginBottom="16dp"/>
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Город:"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_marginTop="8dp"/>
+            <TextView
                 android:id="@+id/tvCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Город"
                 android:textSize="16sp"
-                android:gravity="center"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="4dp"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Пол:"
+                android:textStyle="bold"
+                android:textSize="15sp"/>
             <TextView
                 android:id="@+id/tvGender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Пол"
                 android:textSize="16sp"
-                android:gravity="center"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="4dp"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Telegram:"
+                android:textStyle="bold"
+                android:textSize="15sp"/>
             <TextView
                 android:id="@+id/tvTelegram"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Telegram"
                 android:textSize="16sp"
-                android:gravity="center"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="4dp"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="О себе:"
+                android:textStyle="bold"
+                android:textSize="15sp"/>
             <TextView
                 android:id="@+id/tvBio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="О себе"
                 android:textSize="16sp"
-                android:gravity="center"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="4dp"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Возраст:"
+                android:textStyle="bold"
+                android:textSize="15sp"/>
             <TextView
                 android:id="@+id/tvAge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Возраст"
                 android:textSize="16sp"
-                android:gravity="center"
                 android:layout_marginBottom="24dp"/>
 
         </LinearLayout>
