@@ -161,6 +161,6 @@ The API documentation is available at:
 ## 👥 Authors
 
 - Stupuchev Mikhail - Backend and Android developer
-- Levchuk Sofia - Android developer 
+- Levchuk Sofya - Android developer 
 - Ivanova Aaya - IOS developer 
 
