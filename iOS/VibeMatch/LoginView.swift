@@ -24,6 +24,7 @@ struct LoginView: View {
                 
                 TextField("Email", text: $loginEmail)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .accessibilityIdentifier("LoginEmail")
                     .padding()
                     .keyboardType(.emailAddress)
                     .autocapitalization(.none)

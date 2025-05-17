@@ -24,6 +24,7 @@ struct RegistrationView: View {
 
                 TextField("Username", text: $username)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .accessibilityIdentifier("RegistrationUsername")
                     .padding()
 
                 TextField("Email", text: $email)
