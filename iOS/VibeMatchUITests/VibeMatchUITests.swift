@@ -7,35 +7,76 @@
 
 import XCTest
 
-final class VibeMatchUITests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
+class VibeMatchUITests: XCTestCase {
+    
+    var app: XCUIApplication!
+    
+    override func setUp() {
+        super.setUp()
+        app = XCUIApplication()
+        app.launchArguments.append("--uitesting")
         app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
-
-    @MainActor
-    func testLaunchPerformance() throws {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
-        }
+    
+    func testRegistrationFlow() {
+        // Registration
+        app.textFields["RegistrationUsername"].tap()
+        app.typeText("TestUser")
+        
+        app.textFields["Email"].tap()
+        app.typeText("test@example.com")
+        
+        app.secureTextFields["Password"].tap()
+        app.typeText("password123")
+        
+        app.buttons["Register"].tap()
+        
+        // Verify navigation to Login
+        XCTAssertTrue(app.staticTexts["Login"].exists)
+    }
+    
+    func testLoginAndNavigation() {
+        // Setup test user
+        app.launchEnvironment = ["TEST_USER_EMAIL": "test@example.com", "TEST_USER_PASSWORD": "password123"]
+        
+        // Navigate to Login
+        app.buttons["Already have an account? Login"].tap()
+        
+        // Login
+        app.textFields["LoginEmail"].tap()
+        app.typeText("test@example.com")
+        
+        app.secureTextFields["Password"].tap()
+        app.typeText("password123")
+        
+        app.buttons["Login"].tap()
+        
+        // Verify TabView navigation
+        XCTAssertTrue(app.buttons["Form"].exists)
+        XCTAssertTrue(app.buttons["Create"].exists)
+        XCTAssertTrue(app.buttons["Profile"].exists)
+    }
+    
+    func testFormCreation() {
+        // Navigate to Create tab
+        app.buttons["Create"].tap()
+        
+        // Fill form
+        app.textFields["FormName"].tap()
+        app.typeText("Meeting 1")
+        
+        app.textFields["City"].tap()
+        app.typeText("London")
+        
+        app.textFields["Gender"].tap()
+        app.typeText("Male")
+        
+        app.textFields["Age"].tap()
+        app.typeText("30")
+        
+        app.buttons["Save Form"].tap()
+        
+        // Verify success message
+        XCTAssertTrue(app.staticTexts["Form saved!"].exists)
     }
 }

@@ -71,6 +71,7 @@ struct CreateView: View {
 
             TextField("Name", text: $formName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                .accessibilityIdentifier("FormName")
                 .padding()
 
             TextField("City", text: $formCity)
